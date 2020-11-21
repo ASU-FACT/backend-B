@@ -64,6 +64,8 @@ public class DPPPTController {
 	private final ValidationUtils validationUtils;
 	private final long batchLength;
 	private final long requestTime;
+	private ArrayList<Integer> aggregate;
+	private int NoOfVectorsReceived;
 
 
 	public DPPPTController(DPPPTDataService dataService, String appSource,
@@ -81,6 +83,7 @@ public class DPPPTController {
 	@CrossOrigin(origins = { "https://editor.swagger.io" })
 	@GetMapping(value = "")
 	public @ResponseBody ResponseEntity<String> hello() {
+		System.out.println("v1 Get Request received");
 		return ResponseEntity.ok().header("X-HELLO", "dp3t").body("Hello from DP3T WS");
 	}
 
@@ -113,6 +116,49 @@ public class DPPPTController {
 		} catch (Exception ex) {
 
 		}
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping(value = "/addHotspot")
+	public @ResponseBody ResponseEntity<String> addHotspot(@Valid @RequestBody ArrayList<Integer> hotspotVector) {
+		System.out.println("Received vector at /v1/addHotspot");
+		NoOfVectorsReceived++;
+		if(aggregate ==null)
+		{
+			aggregate = new ArrayList<Integer>();
+		}
+		for(int i=0;i<hotspotVector.size();i++)
+		{
+			int a = hotspotVector.get(i);
+			if(NoOfVectorsReceived%3==1){
+				aggregate.add(a);
+			}
+			else
+				aggregate.set(i, aggregate.get(i)+a);
+			System.out.print(a+" ");
+
+		}
+		System.out.println();
+		if(NoOfVectorsReceived%3==0){
+			System.out.println("Random Aggregate = " + aggregate);
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping(value = "/aggregateHotspots")
+	public @ResponseBody ResponseEntity<String> aggregateHotspots(@Valid @RequestBody ArrayList<Integer> randomAggregate) {
+		ArrayList<Integer> checksum = new ArrayList<Integer>();
+		for(int i=0;i<aggregate.size();i++){
+			checksum.add(aggregate.get(i)+randomAggregate.get(i));
+		}
+		System.out.println("Checksum = " + checksum);
+		aggregate = null;
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping(value = "/testServer")
+	public @ResponseBody ResponseEntity<String> testPost(@Valid @RequestBody Integer a) {
+		System.out.println("Received "+a+" at /v1/testPost");
 		return ResponseEntity.ok().build();
 	}
 
