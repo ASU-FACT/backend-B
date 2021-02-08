@@ -24,11 +24,11 @@ The platform has two backend servers for the secure hotspots histogram protocol.
 
 ## Repositories
 * Android SDK & Calibration app: [dp3t-sdk-android](https://github.com/DP-3T/sdk-android-prestandard)
-* Android App: [dp3t-app-android](https://github.com/ASU-FACT/calibration-app)
 * Backend-A SDK: [dp3t-sdk-backend](https://github.com/ASU-FACT/backend-A)
 * Backend-B SDK: [dp3t-sdk-backend](https://github.com/ASU-FACT/backend-B)
 
 ## Work in Progress
+The documentation below is from DP3T-SDK Backend.
 This SDK contains code for prototyping and testing the protocol, and is not yet complete. It has not yet been reviewed or audited for security and compatibility. 
 
 
